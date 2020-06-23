@@ -1,0 +1,16 @@
+---
+- name: Add Timezone Current Place
+  lineinfile:
+    path: /etc/opt/rh/rh-php71/php.ini
+    regexp: '^date.timezone'
+    line: date.timezone = Asia/Jakarta
+
+- name: Enable Service rh-php71-php-fpm
+  service:
+    name: rh-php71-php-fpm
+    enabled: yes
+
+- name: Start Service Icinga2
+  service:
+    name: rh-php71-php-fpm
+    state: started

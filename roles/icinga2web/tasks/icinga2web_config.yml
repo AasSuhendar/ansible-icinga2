@@ -1,0 +1,19 @@
+---
+- name: Setup Token Icinga2
+  shell: icingacli setup token create
+  register: info_icingacli
+
+- name: Debug Icinga Token
+  debug:
+    msg: "{{info_icingacli.stdout}}"
+
+# - name: Create file for token
+#   file:
+#     path: "/tmp/icinga2web-token.txt"
+#     state: touch
+
+- name: Create file for token
+  lineinfile:
+    path: /tmp/icinga2web-token.txt
+    line: "{{info_icingacli.stdout}}"
+    create: yes

@@ -1,0 +1,20 @@
+---
+- name: Yum Autoremove
+  shell: yum autoremove -y
+  args:
+    warn: yes
+  register: remove_dep_info
+
+# - name: yum-clean-metadata
+#   shell: yum clean metadata
+#   args:
+#     warn: no
+#   register: remove_dep_info
+
+# - name: Remove repository (and clean up left-over metadata)
+#   yum_repository:
+#     name: "{{ item }}"
+#     state: absent
+#   with_items:
+#     - epel
+#   notify: yum-clean-metadata

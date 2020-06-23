@@ -1,0 +1,13 @@
+---
+- name: Wait for 5 Seconds Before Unmounting ZFS Dataset
+  wait_for:
+    timeout: 5
+
+- name: Unmount ZFS Dataset from Icinga Directory
+  mount:
+    path: /etc/icinga2
+    state: absent
+
+- name: Wait for 5 Seconds After Unmounting ZFS Dataset
+  wait_for:
+    timeout: 5

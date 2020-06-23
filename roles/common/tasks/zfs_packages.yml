@@ -1,0 +1,27 @@
+---
+- name: Add ZFS repo
+  yum_repository:
+    name: zfs
+    description: ZFS on Linux for EL7 - dkms
+    file: zfs
+    baseurl: http://download.zfsonlinux.org/epel/7.7/$basearch/
+    gpgcheck: yes
+    enabled: no
+    metadata_expire: 7d
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-zfsonlinux
+
+- name: Add ZFS repo kmod
+  yum_repository:
+    name: zfs-kmod
+    description: ZFS on Linux for EL7 - kmod
+    file: zfs
+    baseurl: http://download.zfsonlinux.org/epel/7.7/kmod/$basearch/
+    gpgcheck: yes
+    enabled: yes
+    metadata_expire: 7d
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-zfsonlinux
+
+- name: Install ZFS
+  yum:
+    name: zfs
+    state: present

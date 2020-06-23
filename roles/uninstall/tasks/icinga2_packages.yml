@@ -1,0 +1,15 @@
+---
+- name: Uninstall Icinga2 Packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - icinga-rpm-release.noarch
+    - icinga2
+    - icingacli
+    - icingaweb2
+    - nagios-plugins-all
+    # - icinga2-selinux
+    - icinga2-ido-mysql
+    - rh-php71-php-mysqlnd
+    - centos-release-scl

@@ -1,0 +1,33 @@
+---
+- name: Find Exsisting Nginx Logs
+  find:
+    paths: /var/log
+    patterns: "nginx*"
+    use_regex: true
+  register: nginx_logs
+
+- name: Remove Exsisting Nginx Logs
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ nginx_logs['files'] }}"
+
+- name: Find Exsisting Nginx Configurations
+  find:
+    paths: /etc/nginx
+    patterns: "nginx*"
+    use_regex: true
+  register: nginx_configs
+
+- name: Remove Exsisting Nginx Configurations
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ nginx_configs['files'] }}"
+
+- name: Remove Exsisting Nginx Configurations Directory
+  file:
+    path: /etc/nginx
+    state: absent

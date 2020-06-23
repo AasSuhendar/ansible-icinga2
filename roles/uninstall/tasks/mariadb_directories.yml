@@ -1,0 +1,26 @@
+---
+- name: Remove Configurations Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/my.cnf.d/
+    - /etc/my.cnf
+
+- name: Remove MariaDB Run Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/run/mariadb
+
+- name: Remove MariaDB Databases Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/mysql
+    - /var/lib/mysql/bin
+    - /var/lib/mysql/data
+    - /var/lib/mysql/log
+    - /var/lib/mysql/tmp

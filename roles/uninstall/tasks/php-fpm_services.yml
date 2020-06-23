@@ -1,0 +1,36 @@
+---
+- name: Get PHP-FPM Service Info
+  shell: service rh-php71-php-fpm status | grep not-found || true
+  args:
+    warn: false
+  register: php-fpm_service_info
+  when:
+    - service_init_status.stat.exists
+
+- name: Disable PHP-FPM Node Service
+  service:
+    name: rh-php71-php-fpm
+    enabled: no
+    state: stopped
+  when:
+    - php-fpm_service_info.stdout.find("not-found") == -1
+
+- name: Wait for 5 Seconds Before Killing All PHP-FPM Service
+  wait_for:
+    timeout: 5
+
+- name: Kill All Remaining PHP-FPM Service
+  shell: killall rh-php71-php-fpm || true
+  args:
+    warn: false
+
+- name: Wait for 5 Seconds After Killing All PHP-FPM Service
+  wait_for:
+    timeout: 5
+
+- name: Reload PHP-FPM Service
+  systemd:
+    daemon_reload: yes
+  when:
+    - service_init_status.stat.islnk is defined
+    - service_init_status.stat.islnk

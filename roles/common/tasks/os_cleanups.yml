@@ -1,0 +1,10 @@
+---
+- name: Yum Autoremove
+  shell: yum autoremove -y
+  args:
+    warn: yes
+  register: remove_dep_info
+
+- name: Debug console
+  debug:
+    msg: log remove dep {{remove_dep_info }}

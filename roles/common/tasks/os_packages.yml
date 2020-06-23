@@ -1,0 +1,37 @@
+---
+- name: Upgrade Operating System
+  yum:
+    name: '*'
+    state: latest
+  register: os_upgrade_info
+
+- name: Debug console
+  debug:
+    msg: log upgrade {{os_upgrade_info }}
+
+- name: Restart Node If Operating System Upgraded
+  shell: sleep 5 && shutdown -r now "Operating System Upgrade Triggered" 
+  args:
+    warn: false
+  async: 1
+  poll: 0    
+  when: os_upgrade_info.changed
+
+- name: Wait For Node to Be Ready If Operating System Upgraded
+  wait_for_connection:
+    connect_timeout: 10
+    sleep: 5
+    delay: 5
+    timeout: 600
+  when: os_upgrade_info.changed
+
+- name: Install Required Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ca-certificates
+    - curl
+    - wget
+    - rsync
+    - net-tools

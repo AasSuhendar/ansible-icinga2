@@ -1,0 +1,19 @@
+---
+- name: Enable Service Icinga2
+  service:
+    name: icinga2
+    enabled: yes
+
+- name: Start Service Icinga2
+  service:
+    name: icinga2
+    state: started
+
+- name: Set Timezone to Asia/Jakarta
+  timezone:
+    name: Asia/Jakarta
+  register: timezone_status
+
+- name: Debug timezone
+  debug:
+    msg: timezone status {{ timezone_status}}

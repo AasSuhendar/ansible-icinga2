@@ -1,0 +1,20 @@
+---
+- name: Install Centos Release SCL Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - centos-release-scl
+    
+- name: Install Icinga2Web Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - icingaweb2
+    - icingacli
+    - rh-php71-php-mysqlnd
+    - nginx
+

@@ -1,0 +1,33 @@
+---
+- include: facts.yml
+
+- include: os_packages.yml
+
+- include: zfs_packages.yml
+  when:
+    - inventory_hostname in groups['icinga']
+    - zfs_backend
+
+- include: zfs_blocks.yml
+  when:
+    - inventory_hostname in groups['icinga']
+    - zfs_backend
+
+- include: zfs_mounts.yml
+  when:
+    - inventory_hostname in groups['icinga']
+    - zfs_backend
+
+- include: mariadb_packages.yml
+  when:
+    - inventory_hostname in groups['icinga']
+
+- include: mariadb_services.yml
+  when:
+    - inventory_hostname in groups['icinga']
+
+- include: mariadb_secure_installation.yml
+  when:
+    - inventory_hostname in groups['icinga']
+
+# - include: os_cleanups.yml

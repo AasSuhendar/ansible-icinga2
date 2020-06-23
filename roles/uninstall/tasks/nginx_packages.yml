@@ -1,0 +1,7 @@
+---
+- name: Uninstall Nginx Packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - nginx

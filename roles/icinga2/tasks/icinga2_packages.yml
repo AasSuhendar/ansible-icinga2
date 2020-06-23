@@ -1,0 +1,40 @@
+---
+- name: Gather the rpm package facts
+  package_facts:
+    manager: auto
+
+# - name: Print the rpm package facts
+#   debug:
+#     var: ansible_facts.packages
+
+- name: Check whether a package called icinga2 is installed
+  debug:
+    msg: "{{ ansible_facts.packages['icinga2'] | length }} versions of icinga2 are installed!"
+  when: "'icinga2' in ansible_facts.packages"
+
+- name: Install Epel-Release
+  yum:
+    name: epel-release
+    state: present
+
+- name: Add Icinga2 From a Remote Repo
+  shell: yum install -y https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm
+  register: install_repo
+  when: "'icinga2' not in ansible_facts.packages or ansible_facts.packages['icinga2'] | length != 1"
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install Icinga2 Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - icinga2
+    - nagios-plugins-all
+    - icinga2-selinux
+    - icinga2-ido-mysql
+    

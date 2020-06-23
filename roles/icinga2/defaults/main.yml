@@ -1,0 +1,7 @@
+---
+# Default Value for Host IP
+galera_ip: "{{ ansible_default_ipv4.address }}"
+
+icinga_db_password: 'icinga'
+
+mariadb_admin_password: 'admin'

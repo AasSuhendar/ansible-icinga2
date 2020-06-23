@@ -1,0 +1,14 @@
+---
+- name: Remove repository from a specific repo file zfs
+  yum_repository:
+    name: "{{ item }}"
+    file: zfs
+    state: absent
+  with_items:
+    - zfs
+    - zfs-kmod
+
+- name: Remove ZFS package
+  yum:
+    name: zfs
+    state: absent

@@ -1,0 +1,39 @@
+---
+- name: Set Root Password in MariaDB
+  mysql_user: 
+    login_user: root
+    login_password: "{{ mariadb_admin_password }}"
+    check_implicit_admin: yes
+    name: root
+    password: "{{ mariadb_admin_password }}"
+    priv: "*.*:ALL,GRANT"
+    host: "{{ item }}"
+  with_items:
+    - "127.0.0.1"
+    - "::1"
+    - localhost
+    - "%"
+    - "{{ ansible_hostname }}"
+
+# - name: Delete Anonymous user in MariaDB Server
+#   mysql_user: 
+#     login_user: root
+#     login_password: "{{ mariadb_admin_password }}"
+#     name: root
+#     user: ""
+#     host: "{{ item }}"
+#     state: "absent"
+#   with_items:
+#     - "127.0.0.1"
+#     - "::1"
+#     - localhost
+#     - "%"
+#     - "{{ ansible_hostname }}"
+
+# - name: Generate MariaDB Configuration .my.cnf in MariaDB Galera Node
+#   template:
+#     src: my.cnf.j2
+#     dest: ~/.my.cnf
+#     # owner: root
+#     # group: root
+#     mode: 0600

@@ -1,0 +1,43 @@
+---
+- name: Get Icinga2 Service Info
+  shell: service icinga2 status | grep not-found || true
+  args:
+    warn: false
+  register: icinga2_service_info
+  when:
+    - service_init_status.stat.exists
+
+- name: Disable Icinga2 Node Service
+  service:
+    name: icinga2
+    enabled: no
+    state: stopped
+  when:
+    - icinga2_service_info.stdout.find("not-found") == -1
+
+- name: Wait for 5 Seconds Before Killing All Icinga2 Service
+  wait_for:
+    timeout: 5
+
+- name: Kill All Remaining Icinga2 Service
+  shell: killall icinga2 || true
+  args:
+    warn: false
+
+- name: Wait for 5 Seconds After Killing All Icinga2 Service
+  wait_for:
+    timeout: 5
+
+- name: Remove Stale PIDs & Sockets Icinga2 Service
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/run/icinga2/icinga2.pid
+
+- name: Reload Icinga2 Service
+  systemd:
+    daemon_reload: yes
+  when:
+    - service_init_status.stat.islnk is defined
+    - service_init_status.stat.islnk

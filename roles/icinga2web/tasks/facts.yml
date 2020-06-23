@@ -1,0 +1,4 @@
+---
+- name: Set Host Facts
+  set_fact:
+    icinga_db_password: "{{ icinga_db_password | default(default_value, true) }}"

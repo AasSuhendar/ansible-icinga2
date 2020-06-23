@@ -1,0 +1,23 @@
+---
+- name: Wait for 5 Seconds Before Mounting ZFS Dataset
+  wait_for:
+    timeout: 5
+
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/icinga2
+    state: directory
+    mode: '0755'
+
+- name: Mount ZFS Dataset to Icinga Directory
+  mount:
+    path: /etc/icinga2
+    src: "/dev/zvol/{{ zfs_pool_name }}/icinga"
+    fstype: xfs
+    opts: defaults
+    passno: "2"
+    state: mounted
+
+- name: Wait for 5 Seconds After Mounting ZFS Dataset
+  wait_for:
+    timeout: 5

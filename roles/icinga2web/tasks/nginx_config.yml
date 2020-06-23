@@ -1,0 +1,28 @@
+---
+- name: Generate MariaDB Configuration .my.cnf in MariaDB Galera Node
+  template:
+    src: icinga2web.conf.j2
+    dest: /etc/nginx/conf.d/icinga2web.conf
+    # owner: root
+    # group: root
+    mode: 0600
+
+- name: Replace Nginx Conf
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: 'default_server'
+    replace: ""
+
+- name: Test Nginx Conf
+  shell: nginx -t
+  register: info_status_nginx
+
+- name: Debug Nginx Status
+  debug:
+    msg: "{{info_status_nginx}}"
+
+- name: Start Service Nginx
+  service:
+    name: nginx
+    state: restarted
+

@@ -1,0 +1,23 @@
+---
+- name: Remove Configurations Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/icinga2
+    - /etc/icingaweb2
+    - /tmp/icinga2web-token.txt
+
+- name: Remove Icinga2 Run Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/run/icinga2
+
+- name: Remove Icinga2 Lib Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/icinga2

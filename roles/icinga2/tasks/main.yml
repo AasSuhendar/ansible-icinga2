@@ -1,0 +1,14 @@
+---
+- include: facts.yml
+
+- include: icinga2_packages.yml
+  when:
+    - inventory_hostname in groups['icinga']
+
+- include: icinga2_services.yml
+  when:
+    - inventory_hostname in groups['icinga']
+
+- include: icinga2_config_db.yml
+  when:
+    - inventory_hostname in groups['icinga']

@@ -1,0 +1,73 @@
+---
+# - name: Create new databases with names 'icinga' and 'icinga2web'
+#   mysql_db:
+#     login_user: root
+#     login_password: "{{ mariadb_admin_password }}"
+#     name:
+#       - icinga
+#       - icinga2web
+#     state: present
+
+# - name: Create user with name 'icinga' and password on icinga database with all privileges
+#   mysql_user:
+#     login_user: root
+#     login_password: "{{ mariadb_admin_password }}"
+#     name: icinga
+#     password: "{{ icinga_db_password }}"
+#     priv: "icinga.*:ALL,GRANT"
+#     state: present
+#   # with_items:
+#   #   - "icinga.*:ALL,GRANT"
+#   #   - "icinga2web.*:ALL,GRANT"
+
+# - name: Create user with name 'icinga' and password on icinga2web database with all privileges
+#   mysql_user:
+#     login_user: root
+#     login_password: "{{ mariadb_admin_password }}"
+#     name: icinga
+#     password: "{{ icinga_db_password }}"
+#     priv: "icinga2web.*:ALL,GRANT"
+#     state: present
+
+- name: Generate Icinga User Script
+  template:
+    src: init_icinga_db.sql.j2
+    dest: /tmp/init_icinga_db.sql
+    owner: root
+    group: root
+    mode: 0644
+
+# - name: Initiate icinga User
+#   shell: mysql -u root -p "{{ mariadb_admin_password }}" < /tmp/init_icinga_db.sql
+#   args:
+#     warn: false
+
+- name: Initiate icinga User
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_admin_password }}"
+    name: all
+    state: import
+    target: /tmp/init_icinga_db.sql
+
+
+- name: Import icinga2-ido-mysql 
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_admin_password }}"
+    name: icinga
+    state: import
+    target: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+
+- name: Execute the command enable icinga2 ido-mysql
+  shell: icinga2 feature enable ido-mysql
+  register: info_icinga2_feature
+
+- name: Debug
+  debug:
+    msg: Info icinga2 feature = {{info_icinga2_feature}}
+
+- name: Restart Service Icinga2
+  service:
+    name: icinga2
+    state: restarted

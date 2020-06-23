@@ -1,0 +1,47 @@
+---
+- name: Find Exsisting Galera Scripts
+  find:
+    paths: /tmp
+    patterns: "mysql*"
+    use_regex: true
+  register: mysql_scripts
+
+- name: Remove Exsisting Galera Scripts
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ mysql_scripts['files'] }}"
+
+- name: Find Exsisting Galera Logs
+  find:
+    paths: /var/log
+    patterns: "mariadb*"
+    use_regex: true
+  register: mariadb_logs
+
+- name: Remove Exsisting Galera Logs
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ mariadb_logs['files'] }}"
+
+- name: Find Exsisting Galera Configurations
+  find:
+    paths: /etc
+    patterns: "my.cnf*"
+    use_regex: true
+  register: mariadb_configs
+
+- name: Remove Exsisting Galera Configurations
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ mariadb_configs['files'] }}"
+
+- name: Remove Exsisting Galera Databases
+  shell: rm -rf /var/lib/mysql/*
+  args:
+    warn: false

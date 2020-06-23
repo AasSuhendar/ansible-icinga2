@@ -1,0 +1,44 @@
+---
+- name: Get MariaDB Service Info
+  shell: service mariadb status | grep not-found || true
+  args:
+    warn: false
+  register: mariadb_service_info
+  when:
+    - service_init_status.stat.exists
+
+- name: Disable MariaDB Service
+  service:
+    name: mariadb
+    enabled: no
+    state: stopped
+  when:
+    - mariadb_service_info.stdout.find("not-found") == -1
+
+- name: Wait for 5 Seconds Before Killing All MariaDB Service
+  wait_for:
+    timeout: 5
+
+- name: Kill All Remaining MariaDB Service
+  shell: killall mysqld || true
+  args:
+    warn: false
+
+- name: Wait for 5 Seconds After Killing All MariaDB Service
+  wait_for:
+    timeout: 5
+
+- name: Remove Stale PIDs & Sockets MariaDB Service
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/run/mariadb/mariadb.pid
+    # - /var/run/mariadb/mariadb.sock
+
+- name: Reload MariaDB Service
+  systemd:
+    daemon_reload: yes
+  when:
+    - service_init_status.stat.islnk is defined
+    - service_init_status.stat.islnk

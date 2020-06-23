@@ -1,0 +1,15 @@
+---
+- hosts: icinga
+  any_errors_fatal: true
+  roles:
+  - role: common
+
+- hosts: icinga
+  any_errors_fatal: true
+  roles:
+  - role: icinga2
+
+- hosts: icinga
+  any_errors_fatal: true
+  roles:
+  - role: icinga2web

@@ -1,0 +1,40 @@
+---
+- name: Get Nginx Service Info
+  shell: service nginx status | grep not-found || true
+  args:
+    warn: false
+  register: nginx_service_info
+  when:
+    - service_init_status.stat.exists
+
+- name: Debug Nginx
+  debug:
+    msg: '{{nginx_service_info.stdout.find("not-found")}}'
+    
+- name: Disable Nginx Node Service
+  service:
+    name: nginx
+    enabled: no
+    state: stopped
+  when:
+    - nginx_service_info.stdout.find("not-found") == -1
+
+- name: Wait for 5 Seconds Before Killing All Nginx Service
+  wait_for:
+    timeout: 5
+
+- name: Kill All Remaining Nginx Service
+  shell: killall nginx || true
+  args:
+    warn: false
+
+- name: Wait for 5 Seconds After Killing All Nginx Service
+  wait_for:
+    timeout: 5
+
+- name: Reload Nginx Service
+  systemd:
+    daemon_reload: yes
+  when:
+    - service_init_status.stat.islnk is defined
+    - service_init_status.stat.islnk
