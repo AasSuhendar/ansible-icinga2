@@ -14,57 +14,57 @@
   when:
     - inventory_hostname in groups['icinga']
 
-- include: mariadb_services.yml
-  when:
-    - inventory_hostname in groups['icinga']
+# - include: mariadb_services.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
 
-- include: mariadb_packages.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - full_uninstall
+# - include: mariadb_packages.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - full_uninstall
 
-- include: mariadb_cleanups.yml
-  when:
-    - inventory_hostname in groups['icinga']
+# - include: mariadb_cleanups.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
 
-- include: zfs_mounts.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - zfs_backend
-    - full_uninstall
+# - include: zfs_mounts.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - zfs_backend
+#     - full_uninstall
 
-- include: mariadb_directories.yml
-  when:
-    - inventory_hostname in groups['icinga']
+# - include: mariadb_directories.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
 
-- include: mariadb_users.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - full_uninstall
+# - include: mariadb_users.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - full_uninstall
 
-- include: icinga2_services.yml
-  when:
-    - inventory_hostname in groups['icinga']
+# - include: icinga2_services.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
 
-- include: icinga2_packages.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - full_uninstall
+# - include: icinga2_packages.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - full_uninstall
 
-- include: icinga2_directories.yml
-  when:
-    - inventory_hostname in groups['icinga']
+# - include: icinga2_directories.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
 
-- include: zfs_blocks.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - zfs_backend
-    - full_uninstall
+# - include: zfs_blocks.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - zfs_backend
+#     - full_uninstall
 
-- include: zfs_cleanups.yml
-  when:
-    - inventory_hostname in groups['icinga']
-    - full_uninstall 
-    - zfs_backend
+# - include: zfs_cleanups.yml
+#   when:
+#     - inventory_hostname in groups['icinga']
+#     - full_uninstall 
+#     - zfs_backend
 
 # - include: os_cleanups.yml
