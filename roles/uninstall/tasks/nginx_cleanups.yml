@@ -1,9 +1,10 @@
 ---
 - name: Find Exsisting Nginx Logs
   find:
-    paths: /var/log/nginx/
-    patterns: "*.log"
+    paths: /var/log/nginx
+    file_type: file
     use_regex: true
+    patterns: ['^_[0-9]{2,4}_.*.log$']
   register: nginx_logs
 
 - name: Display all file nginx logs
