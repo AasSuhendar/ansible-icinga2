@@ -1,29 +1,24 @@
 ---
 
-- name: Recursively find /tmp files older than 2 days
-  find:
-    paths: /tmp
-    recurse: yes
-
 - name: Find Exsisting Nginx Logs
   find:
     paths: /var/log/nginx
     recurse: yes
     # file_type: file
-    use_regex: true
-    patterns: '*.log'
+    # use_regex: true
+    # patterns: '*.log'
   register: nginx_logs
 
 - name: Display all file nginx logs
   debug:
     msg: File is {{ nginx_logs }}
   
-# - name: Remove Exsisting Nginx Logs
-#   file:
-#     path: "{{ item['path'] }}"
-#     state: absent
-#   with_items:
-#     - "{{ nginx_logs['files'] }}"
+- name: Remove Exsisting Nginx Logs
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ nginx_logs['files'] }}"
 
 - name: Find Exsisting Nginx Configurations
   find:
@@ -39,12 +34,12 @@
     msg: File is {{ nginx_configs }}
 
 
-# - name: Remove Exsisting Nginx Configurations
-#   file:
-#     path: "{{ item['path'] }}"
-#     state: absent
-#   with_items:
-#     - "{{ nginx_configs['files'] }}"
+- name: Remove Exsisting Nginx Configurations
+  file:
+    path: "{{ item['path'] }}"
+    state: absent
+  with_items:
+    - "{{ nginx_configs['files'] }}"
 
 # - name: Remove Exsisting Nginx Configurations Directory
 #   file:
