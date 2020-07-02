@@ -2,9 +2,9 @@
 - name: Find Exsisting Nginx Logs
   find:
     paths: /var/log/nginx
-    file_type: file
+    # file_type: file
     use_regex: true
-    patterns: ['^_[0-9]{2,4}_.*.log$']
+    patterns: '*.log'
   register: nginx_logs
 
 - name: Display all file nginx logs
@@ -20,10 +20,16 @@
 
 - name: Find Exsisting Nginx Configurations
   find:
-    paths: /etc/nginx/conf.d/
-    patterns: "*.conf"
+    paths: /etc/nginx/conf.d
+    # file_type: file
+    patterns: '*.conf'
     use_regex: true
   register: nginx_configs
+
+- name: Display all file nginx conf
+  debug:
+    msg: File is {{ nginx_configs }}
+
 
 - name: Remove Exsisting Nginx Configurations
   file:
