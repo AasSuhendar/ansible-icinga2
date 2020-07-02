@@ -7,7 +7,7 @@
 
 - name: Find Exsisting Nginx Logs
   find:
-    paths: /var/log/nginx
+    paths: /var/log
     file_type: file
     use_regex: true
     patterns: '*.log'
