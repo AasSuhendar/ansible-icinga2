@@ -1,7 +1,7 @@
 ---
 - name: Find Exsisting Nginx Logs
   find:
-    paths: /var/log/nginx
+    paths: /var/log/nginx/
     patterns: "*.log"
     use_regex: true
   register: nginx_logs
@@ -15,7 +15,7 @@
 
 - name: Find Exsisting Nginx Configurations
   find:
-    paths: /etc/nginx/conf.d
+    paths: /etc/nginx/conf.d/
     patterns: "*.conf"
     use_regex: true
   register: nginx_configs
