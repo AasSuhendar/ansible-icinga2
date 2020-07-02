@@ -9,4 +9,4 @@ zfs_dataset_size=3G
 mariadb_admin_password=admin-pass
 
 [icinga]
-192.168.56.22
+192.168.45.14
