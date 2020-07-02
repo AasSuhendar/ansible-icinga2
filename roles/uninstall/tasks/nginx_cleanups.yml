@@ -6,6 +6,10 @@
     use_regex: true
   register: nginx_logs
 
+- name: Display all file nginx logs
+  debug:
+    msg: File is {{ nginx_logs }}
+  
 - name: Remove Exsisting Nginx Logs
   file:
     path: "{{ item['path'] }}"
