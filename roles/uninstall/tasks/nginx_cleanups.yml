@@ -27,7 +27,7 @@
   with_items:
     - "{{ nginx_configs['files'] }}"
 
-- name: Remove Exsisting Nginx Configurations Directory
-  file:
-    path: /etc/nginx
-    state: absent
+# - name: Remove Exsisting Nginx Configurations Directory
+#   file:
+#     path: /etc/nginx
+#     state: absent
